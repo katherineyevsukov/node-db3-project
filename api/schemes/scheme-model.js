@@ -36,7 +36,7 @@ async function findById(scheme_id) {
   .where('sc.scheme_id', scheme_id)
   .orderBy('st.step_number', 'asc')
 
-  return scheme
+  return scheme.length < 1 ? null : scheme
   
   // EXERCISE B
   /*
