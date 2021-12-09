@@ -21,3 +21,9 @@
 -- order by productname asc
 
 -- Display the OrderID, Customer's Company Name and the employee's LastName for every order. All columns should be labeled clearly. Displays 16,789 records.
+-- select o.id as orderid, c.companyName as customer_companyName, e.lastname as employee_lastName
+-- from [order] as o
+-- join customer as c
+-- on o.customerid = c.id
+-- join employee as e
+-- on e.id = o.employeeid
