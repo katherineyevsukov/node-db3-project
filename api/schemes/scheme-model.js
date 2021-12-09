@@ -55,7 +55,7 @@ async function findById(scheme_id) {
     return formattedScheme;
   }
 
-  return scheme.length < 1 ? null : scheme
+  
 
   // EXERCISE B
   /*
@@ -147,6 +147,21 @@ function findSteps(scheme_id) {
         }
       ]
   */
+// SQL Query
+//select sc.scheme_name, st.step_id, st.step_number, st.instructions
+// from
+//  schemes as sc
+// left join steps as st
+// on sc.scheme_id = st.scheme_id
+// where sc.scheme_id = 1
+// order by step_number 
+
+return db('schemes as sc')
+.select("sc.scheme_name", "st.step_id", "st.step_number", "st.instructions")
+.join("steps as st", "sc.scheme_id", "st.scheme_id")
+.where("sc.scheme_id", scheme_id)
+.orderBy("st.step_number", "asc")
+
 }
 
 function add(scheme) {
