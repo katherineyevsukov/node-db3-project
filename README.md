@@ -79,11 +79,90 @@ Use a graphical tool like SQLite Studio to open `./data/northwind.db3` and execu
 In [SQL Try Editor at W3Schools.com](https://www.w3schools.com/Sql/tryit.asp?filename=trysql_select_top):
 
 - Find the number of shipments by each shipper.
+
+SELECT s.id,
+       s.companyname,
+       count(o.id) AS numberOrders
+  FROM shipper AS s
+       LEFT JOIN
+       [order] AS o ON s.id = o.shipvia
+ GROUP BY s.id;
+
+
+Speedy Express - 5572
+United Package - 5592
+Federal Shipping - 5654
+
 - Find the top 5 best performing employees measured in number of orders.
+
+SELECT e.id,
+       e.firstname || ' ' || e.lastname AS fullName,
+       count(o.id) AS numberOrders
+  FROM employee AS e
+       LEFT JOIN
+       [order] AS o ON e.id = o.employeeid
+ GROUP BY e.id
+ ORDER BY numberOrders DESC
+ LIMIT 5;
+
+
+Janet Leverling: 1964
+Nancy Davolio: 1918
+Margaret Peacock: 1907
+Steven Buchanan: 1859
+Michael Suyama: 1849
+
 - Find the top 5 best performing employees measured in revenue.
+
+SELECT e.firstname || ' ' || e.lastname AS fullName,
+       round(sum(od.unitprice) ) AS totalSales
+  FROM employee AS e
+       LEFT JOIN
+       [order] AS o ON e.id = o.employeeid
+       JOIN
+       orderdetail AS od ON o.id = od.orderid
+ GROUP BY e.id
+ ORDER BY totalSales DESC
+ LIMIT 5;
+
+
+Janet Leverling - 2090512
+Steven Buchanan - 2054921
+Michael Suyama - 2016626
+Margaret Peacock - 1997494
+Anne Dodsworth - 1991824
+
+
 - Find the category that brings in the least revenue.
+
+SELECT c.categoryname,
+       p.id,
+       round(sum(od.unitprice) ) AS totalRevenue
+  FROM category AS c
+       LEFT JOIN
+       product AS p ON p.categoryid = c.id
+       JOIN
+       orderdetail AS od ON p.id = od.productid
+ GROUP BY categoryname
+ ORDER BY totalRevenue ASC
+ LIMIT 1;
+
+
+Grains/cereals
+
 - Find the customer country with the most orders.
+
+SELECT c.country,
+       count(o.id) AS totalOrders
+  FROM customer AS c
+       LEFT JOIN
+       [order] AS o ON c.id = o.customerid
+ GROUP BY c.country
+ ORDER BY totalOrders DESC
+ LIMIT 1;
+
+
+USA - 2374
+
+
 - Find the shipper that moves the most cheese measured in units.
-
-
-TEST
