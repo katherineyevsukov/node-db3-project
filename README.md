@@ -113,9 +113,8 @@ Steven Buchanan: 1859
 Michael Suyama: 1849
 
 - Find the top 5 best performing employees measured in revenue.
-
-SELECT e.firstname || ' ' || e.lastname AS fullName,
-       round(sum(od.unitprice) ) AS totalSales
+I changed it to SELECT e.firstname || ' ' || e.lastname AS fullName,
+       round(sum(od.unitprice* od.quantity) - (od.quantity * od.discount)) AS totalSales
   FROM employee AS e
        LEFT JOIN
        [order] AS o ON e.id = o.employeeid
@@ -123,7 +122,7 @@ SELECT e.firstname || ' ' || e.lastname AS fullName,
        orderdetail AS od ON o.id = od.orderid
  GROUP BY e.id
  ORDER BY totalSales DESC
- LIMIT 5;
+ LIMIT 5
 
 
 Janet Leverling - 2090512
@@ -166,3 +165,22 @@ USA - 2374
 
 
 - Find the shipper that moves the most cheese measured in units.
+
+SELECT s.companyname,
+       c.categoryname,
+       sum(od.quantity) AS units_shipped
+  FROM shipper AS s
+       JOIN
+       [order] AS o ON s.id = o.shipvia
+       JOIN
+       orderdetail AS od ON o.id = od.orderid
+       JOIN
+       product AS p ON od.productid = p.id
+       JOIN
+       category AS c ON c.id = p.categoryid
+ WHERE p.categoryid = 4
+ GROUP BY s.companyname
+ ORDER BY units_shipped DESC
+ LIMIT 1;
+
+ Federal Shipping - 692466
